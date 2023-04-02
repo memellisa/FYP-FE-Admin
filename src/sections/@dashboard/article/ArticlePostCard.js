@@ -30,11 +30,11 @@ ArticlePostCard.propTypes = {
 };
 
 export default function ArticlePostCard({ post }) {
-  const { title, comment, like, createdAt } = post;
+  const { title, comments, likes, createdAt } = post;
 
   const POST_INFO = [
-    { number: comment, icon: 'eva:message-circle-fill' },
-    { number: like, icon: 'eva:heart-fill' },
+    { number: comments, icon: 'eva:message-circle-fill' },
+    { number: likes, icon: 'eva:heart-fill' },
   ];
 
   return (
@@ -60,7 +60,28 @@ export default function ArticlePostCard({ post }) {
           </StyledTitle>
 
           <StyledInfo>
-            {POST_INFO.map((info, index) => (
+            <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  ml: 0 ,
+                }}
+              >
+                <Iconify icon={POST_INFO[0].icon} sx={{ width: 16, height: 16, mr: 0.5 }} />
+                <Typography variant="caption">{comments === 0 ? 0 : fShortenNumber(comments)}</Typography>
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                ml: 1.5,
+              }}
+            >
+              <Iconify icon={POST_INFO[1].icon} sx={{ width: 16, height: 16, mr: 0.5 }} />
+              <Typography variant="caption">{likes === 0 ? 0 : fShortenNumber(likes)}</Typography>
+            </Box>
+
+            {/* {POST_INFO.map((info, index) => (
               <Box
                 key={index}
                 sx={{
@@ -72,7 +93,7 @@ export default function ArticlePostCard({ post }) {
                 <Iconify icon={info.icon} sx={{ width: 16, height: 16, mr: 0.5 }} />
                 <Typography variant="caption">{fShortenNumber(info.number)}</Typography>
               </Box>
-            ))}
+            ))} */}
           </StyledInfo>
         </CardContent>
       </Card>
