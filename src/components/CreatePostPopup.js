@@ -62,11 +62,11 @@ const CreatePostPopup = props => {
         }
     }, [fileName, filesContent]);
 
-  return (
+    return (
     <div style={styles.popupBox}>
       <div style={styles.box}>
         <span style={styles.closeIcon} onClick={props.handleClose}>x</span>
-            <b>Create Post</b>
+        <b>Create Post</b>
             <FormControl style={{left: 0, position: 'absolute', width: '100%'}}>
                 <Container style={styles.inputContainer}>
                     {/* <Container style={styles.inputOptionTitle}>
@@ -124,7 +124,7 @@ const CreatePostPopup = props => {
                 <FormHelperText id="my-helper-text">We'll never share your email.</FormHelperText> */}
             </FormControl>
 
-            <Button style={styles.submitButton} onClick={submitCreatePost} variant="contained" disableElevation>
+            <Button style={styles.submitButton} disabled={fileName && groupSelection && author && title && content ? false : true} onClick={submitCreatePost} variant="contained" disableElevation>
                 Submit 
             </Button>
       </div>

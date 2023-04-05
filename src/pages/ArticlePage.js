@@ -6,6 +6,10 @@ import POSTS from '../_mock/article';
 import { useEffect, useState } from 'react';
 import CreatePostPopup from '../components/CreatePostPopup';
 import { getAllArticleFromDB, getPostsInForums } from '../utils/api/article.api';
+import ArticlePopup from 'src/components/ArticlePopup';
+import CreateGroupPopup from 'src/components/CreateGroupPopup';
+import _ from 'lodash';
+import ConfirmDeletePopup from 'src/components/ConfirmDeletePopup';
 
 const SORT_OPTIONS = [
   { value: 'latest', label: 'Latest' },
@@ -16,16 +20,33 @@ const SORT_OPTIONS = [
 export default function ArticlePage() {
   const [articleList, setArticleList] = useState([])
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isCreateGroupPopupOpen, setIsCreateGroupPopupOpen] = useState(false);
+  const [openedArticlePopup, setOpenedArticlePopup] = useState('');
+  const [deleteArticlePopup, setDeleteArticlePopup] = useState('');
 
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
     fetchArticle();
   }
 
+  const toggleCreateGroupPopup = () => {
+    setIsCreateGroupPopupOpen(!isCreateGroupPopupOpen);
+    fetchArticle();
+  }
+
+  const handleArticlePopupClose = () => {
+    setOpenedArticlePopup('');
+  }
+
+  const handleDeleteArticlePopupClose = () => {
+    setDeleteArticlePopup('');
+    fetchArticle();
+  }
+
   const fetchArticle = async () => {
     getAllArticleFromDB().then(res => {
-      console.log("DATA", res.data)
-      if (articleList != res.data) {
+      console.log("DATA", typeof res.data)
+      if (!(_.isEqual(articleList, res.data))) {
         setArticleList(res.data)
       }
     })
@@ -46,9 +67,14 @@ export default function ArticlePage() {
           <Typography variant="h4" gutterBottom>
             Article
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={togglePopup}>
-            New Post
-          </Button>
+          <div>
+            <Button style={{marginRight: 10}} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={toggleCreateGroupPopup} >
+              New Group
+            </Button>
+            <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={togglePopup}>
+              New Post
+            </Button>
+          </div>
           {isPopupOpen && <CreatePostPopup handleClose={togglePopup} />}
         </Stack>
 
@@ -56,6 +82,12 @@ export default function ArticlePage() {
           <ArticlePostsSearch posts={POSTS} />
           <ArticlePostsSort options={SORT_OPTIONS} />
         </Stack>
+
+        {isCreateGroupPopupOpen && <CreateGroupPopup handleClose={toggleCreateGroupPopup} />}
+
+        {openedArticlePopup && <ArticlePopup handleClose={handleArticlePopupClose} postID={openedArticlePopup}/>}
+
+        {deleteArticlePopup && <ConfirmDeletePopup handleClose={handleDeleteArticlePopupClose} postID={deleteArticlePopup}/>}
 
         <Container disableGutters>
           {articleList.map((group) => {
@@ -69,15 +101,18 @@ export default function ArticlePage() {
             return (
               <Container disableGutters>
               {Object.entries(group).map((article) => {
-                console.log("ARTICLE", article[0])
+                // console.log("ARTICLE", article[1].posts)
                 return (
                   <Container disableGutters>
                     <Typography key={article[0]} variant="h5" gutterBottom>{article[0]}</Typography>
+                    {Object.keys(article[1].posts).length === 0 ? <Typography key={article[0]} variant="h9" gutterBottom>No article yet in this forum</Typography> : ''}
                     <Grid container spacing={3} sx={{mb: 4.5}}>
                     {Object.entries(article[1].posts).map((post) => {
-                        let postObj = {"title": post[1].title, "comments": post[1].comments, "likes": post[1].likes, "createdAt": post[1].date}
+                        let postObj = {"id": post[0], "title": post[1].title, "comments": post[1].comments, "likes": post[1].likes, "createdAt": post[1].date}
                         console.log("POST1", post[1])
-                        return <ArticlePostCard key={post[0]} post={postObj} />;
+                        return (
+                            <ArticlePostCard key={post[0]} post={postObj} onClick={event => setOpenedArticlePopup(post[0])} onButtonClick={event => setDeleteArticlePopup(post[0])}/>
+                        )
                       })}
                     </Grid>
                   </Container>
