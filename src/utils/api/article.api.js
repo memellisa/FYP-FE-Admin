@@ -120,4 +120,21 @@ const deletePostByID = async (postID) => {
     } 
 }
 
-export { getAllArticleFromDB, getPostsInForums, uploadPostImage, createPost, getPostByID, createGroup, deletePostByID }
+const deleteGroup = async (group) => {
+    try {
+        const response = await axios.delete(`${flaskURL}/community/${group}`,{
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                'Content-Type': 'application/json'
+            }
+        });
+        console.log('RESP',response)
+        return { data: response.data, error: null }
+    } catch (error) {
+        // console.log(payload)
+        // console.log('RESP',error.response)
+        return { data: null, error }
+    } 
+}
+
+export { getAllArticleFromDB, getPostsInForums, uploadPostImage, createPost, getPostByID, createGroup, deletePostByID, deleteGroup }

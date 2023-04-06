@@ -10,6 +10,7 @@ import ArticlePopup from 'src/components/ArticlePopup';
 import CreateGroupPopup from 'src/components/CreateGroupPopup';
 import _ from 'lodash';
 import ConfirmDeletePopup from 'src/components/ConfirmDeletePopup';
+import ConfirmDeleteGroupPopup from 'src/components/ConfirmDeleteGroupPopup';
 
 const SORT_OPTIONS = [
   { value: 'latest', label: 'Latest' },
@@ -23,6 +24,7 @@ export default function ArticlePage() {
   const [isCreateGroupPopupOpen, setIsCreateGroupPopupOpen] = useState(false);
   const [openedArticlePopup, setOpenedArticlePopup] = useState('');
   const [deleteArticlePopup, setDeleteArticlePopup] = useState('');
+  const [deleteGroupPopup, setDeleteGroupArticlePopup] = useState('');
 
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
@@ -40,6 +42,11 @@ export default function ArticlePage() {
 
   const handleDeleteArticlePopupClose = () => {
     setDeleteArticlePopup('');
+    fetchArticle();
+  }
+
+  const handleDeleteGroupPopupClose = () => {
+    setDeleteGroupArticlePopup('');
     fetchArticle();
   }
 
@@ -89,6 +96,8 @@ export default function ArticlePage() {
 
         {deleteArticlePopup && <ConfirmDeletePopup handleClose={handleDeleteArticlePopupClose} postID={deleteArticlePopup}/>}
 
+        {deleteGroupPopup && <ConfirmDeleteGroupPopup handleClose={handleDeleteGroupPopupClose} group={deleteGroupPopup}/>}
+
         <Container disableGutters>
           {articleList.map((group) => {
             console.log("GROUP", group)
@@ -104,7 +113,12 @@ export default function ArticlePage() {
                 // console.log("ARTICLE", article[1].posts)
                 return (
                   <Container disableGutters>
-                    <Typography key={article[0]} variant="h5" gutterBottom>{article[0]}</Typography>
+                    <Container disableGutters style={{display: 'flex', flexDirection: 'row'}}>
+                      <Typography key={article[0]} variant="h5" gutterBottom>{article[0]}</Typography>
+                      <Button sx={{borderRadius: '50%', height: 30, width: 10}}  onClick={() => {setDeleteGroupArticlePopup(article[0])}}>
+                        <Iconify icon={'eva:trash-2-outline'} sx={{ width: 16, height: 16, mr: 0.5, color: 'red' }} />
+                      </Button>
+                    </Container>
                     {Object.keys(article[1].posts).length === 0 ? <Typography key={article[0]} variant="h9" gutterBottom>No article yet in this forum</Typography> : ''}
                     <Grid container spacing={3} sx={{mb: 4.5}}>
                     {Object.entries(article[1].posts).map((post) => {
