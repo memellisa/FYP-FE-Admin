@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { FormControl, Container, Button, FormLabel, MenuItem, Typography, TextField, FormHelperText } from '@mui/material';
+import { Avatar, Paper, Typography } from '@mui/material';
 import { getPostByID } from "src/utils/api/article.api";
+import { fDate } from "src/utils/formatTime";
 
 const ArticlePopup = props => {
     const [postInfo, setPostInfo] = useState({})
@@ -33,11 +34,49 @@ const ArticlePopup = props => {
                     {postInfo.content}
                 </Typography>
 
-                <Typography style={{...styles.info, paddingBottom: 65}}>
+                <Typography style={{...styles.info, paddingBottom: 15}}>
                     Written By: {postInfo.author}
                     <br></br>
                     {postInfo.date}
                 </Typography>
+
+                {postInfo.comments ? <div style={styles.postedComment}>
+                    <Typography variant="h6" sx={{mb: 1}}>Comments: </Typography>
+                    {postInfo.comments.map((comm) => {
+                        console.log("COMM", comm)
+                        let content = comm
+                        return <div style={{flexDirection: "row", marginBottom: 20}}>
+                            <div>
+                                <div style={{display: "flex", flexDirection: "row"}}>
+                                    <Avatar
+                                        sx={{ width: 30, height: 30, mb: 1 }}
+                                        src={content.avatar ? content.avatar : "https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png" }
+                                        style={{display: "inline-block"}}
+
+                                    />
+                                    <Typography style={{...styles.userName, display: "inline-block"}}>{content.name}</Typography>
+                                </div>
+                                <div style={styles.commentContent}>
+                                    <Paper variant="outlined" containerStyle={styles.commentContainer} sx={{ pl: 2 }}>
+                                        {/* <Text style={styles.commentText}>{comment.content}</Text> */}
+                                        <Typography style={styles.commentText}>
+                                            {content.comment}
+                                        </Typography>
+                                        
+                                    </Paper>
+                                    {/* <Icon
+                                        name={like ? "favorite" : "favorite-border" }
+                                        color={like ? "red" : "#0F52BA"} 
+                                        size='22'  
+                                        containerStyle={styles.icon} 
+                                        onPress={handleLikeClicked}/>  */}
+                                            {/* add numb of likes*/}
+                                </div>
+                                <Typography style={styles.commentLikes}>{fDate(content.date)}</Typography> 
+                            </div>
+                        </div>
+                    })} 
+                </div> : ""}
             </div>
         </div>
     )
@@ -153,6 +192,34 @@ const styles = {
         fontSize: 14,
         textAlign: 'left',
     },
+
+    userName: {
+        color: 'grey',
+        fontSize: 15,
+        paddingLeft: 10,
+        paddingTop: 5,
+    },
+
+    commentContent: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    commentContainer: {
+        marginTop: 5,
+        marginRight: 5,
+        paddingLeft: 40,
+        borderBottomRightRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomLeftRadius: 15
+    },
+    
+    commentLikes: {
+        color: 'grey',
+        fontSize: 13,
+        paddingLeft: 20,
+    }
 };
 
 export default ArticlePopup;

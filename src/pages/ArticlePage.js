@@ -2,7 +2,6 @@ import { Helmet } from 'react-helmet-async';
 import { Grid, Button, Container, Stack, Typography } from '@mui/material';
 import Iconify from '../components/iconify';
 import { ArticlePostCard, ArticlePostsSort, ArticlePostsSearch } from '../sections/@dashboard/article';
-import POSTS from '../_mock/article';
 import { useEffect, useState } from 'react';
 import CreatePostPopup from '../components/CreatePostPopup';
 import { getAllArticleFromDB, getPostsInForums } from '../utils/api/article.api';
@@ -12,11 +11,12 @@ import _ from 'lodash';
 import ConfirmDeletePopup from 'src/components/ConfirmDeletePopup';
 import ConfirmDeleteGroupPopup from 'src/components/ConfirmDeleteGroupPopup';
 
-const SORT_OPTIONS = [
-  { value: 'latest', label: 'Latest' },
-  { value: 'popular', label: 'Popular' },
-  { value: 'oldest', label: 'Oldest' },
-];
+// import POSTS from '../_mock/article';
+// const SORT_OPTIONS = [
+//   { value: 'latest', label: 'Latest' },
+//   { value: 'popular', label: 'Popular' },
+//   { value: 'oldest', label: 'Oldest' },
+// ];
 
 export default function ArticlePage() {
   const [articleList, setArticleList] = useState([])
@@ -71,7 +71,7 @@ export default function ArticlePage() {
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h3" gutterBottom>
             Article
           </Typography>
           <div>
@@ -85,10 +85,12 @@ export default function ArticlePage() {
           {isPopupOpen && <CreatePostPopup handleClose={togglePopup} />}
         </Stack>
 
-        <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
+        {/* <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
           <ArticlePostsSearch posts={POSTS} />
           <ArticlePostsSort options={SORT_OPTIONS} />
-        </Stack>
+        </Stack> */}
+
+        <Typography variant="h4" gutterBottom>Articles are listed based on groups, click on the article title to have a preview on them. <br></br><br></br></Typography>
 
         {isCreateGroupPopupOpen && <CreateGroupPopup handleClose={toggleCreateGroupPopup} />}
 
