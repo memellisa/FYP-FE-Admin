@@ -31,7 +31,7 @@ ArticlePostCard.propTypes = {
 };
 
 export default function ArticlePostCard({ post, onClick, onButtonClick }) {
-  const { id, title, comments, likes, createdAt } = post;
+  const { id, title, comments, createdAt } = post;
 
   const [deletePopupOpen, setDeletePopupOpen] = useState(false)
 
@@ -41,7 +41,7 @@ export default function ArticlePostCard({ post, onClick, onButtonClick }) {
 
   const POST_INFO = [
     { number: comments, icon: 'eva:message-circle-fill' },
-    { number: likes, icon: 'eva:heart-fill' },
+    // { number: likes, icon: 'eva:heart-fill' },
   ];
 
   return (
