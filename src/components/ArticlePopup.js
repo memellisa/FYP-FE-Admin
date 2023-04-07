@@ -43,7 +43,6 @@ const ArticlePopup = props => {
                 {postInfo.comments ? <div style={styles.postedComment}>
                     <Typography variant="h6" sx={{mb: 1}}>Comments: </Typography>
                     {postInfo.comments.map((comm) => {
-                        console.log("COMM", comm)
                         let content = comm
                         return <div style={{flexDirection: "row", marginBottom: 20}}>
                             <div>

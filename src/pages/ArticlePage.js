@@ -102,13 +102,7 @@ export default function ArticlePage() {
 
         <Container disableGutters>
           {articleList.map((group) => {
-            console.log("GROUP", group)
-            // let postInTheForum;
-            // await getPostsInForums(article[0]).then(res => {
-            //   postInTheForum = (res.data)
-            // })
-            // console.log("TEST", postInTheForum)
-            // console.log(article[1].posts)
+            // console.log("GROUP", group)
             return (
               <Container disableGutters>
               {Object.entries(group).map((article) => {
@@ -125,7 +119,7 @@ export default function ArticlePage() {
                     <Grid container spacing={3} sx={{mb: 4.5}}>
                     {Object.entries(article[1].posts).map((post) => {
                         let postObj = {"id": post[0], "title": post[1].title, "comments": post[1].comments, "likes": post[1].likes, "createdAt": post[1].date}
-                        console.log("POST1", post[1])
+                        // console.log("POST1", post[1])
                         return (
                             <ArticlePostCard key={post[0]} post={postObj} onClick={event => setOpenedArticlePopup(post[0])} onButtonClick={event => setDeleteArticlePopup(post[0])}/>
                         )
@@ -138,15 +132,7 @@ export default function ArticlePage() {
             )
 
           })}
-
-
         </Container>
-
-        {/* <Grid container spacing={3}>
-          {POSTS.map((post, index) => (
-            <ArticlePostCard key={post.id} post={post} index={index} />
-          ))}
-        </Grid> */}
       </Container>
     </>
   );

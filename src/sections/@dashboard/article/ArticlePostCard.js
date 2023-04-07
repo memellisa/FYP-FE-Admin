@@ -5,7 +5,6 @@ import { fDate } from '../../../utils/formatTime';
 import { fShortenNumber } from '../../../utils/formatNumber';
 import Iconify from '../../../components/iconify';
 import Button from '@mui/material/Button';
-import ConfirmDeletePopup from 'src/components/ConfirmDeletePopup';
 import { useState } from 'react';
 
 const StyledTitle = styled(Link)({
@@ -61,8 +60,6 @@ export default function ArticlePostCard({ post, onClick, onButtonClick }) {
             <Iconify icon={'eva:trash-2-outline'} sx={{ width: 16, height: 16, mr: 0.5, color: 'red' }} />
           </Button>
 
-          {/* {deletePopupOpen && <ConfirmDeletePopup handleClose={toggleDeletePopup} postID={id} title={title} />} */}
-
           <StyledTitle
             color="inherit"
             variant="subtitle2"
@@ -85,7 +82,7 @@ export default function ArticlePostCard({ post, onClick, onButtonClick }) {
                 <Iconify icon={POST_INFO[0].icon} sx={{ width: 16, height: 16, mr: 0.5 }} />
                 <Typography variant="caption">{comments === 0 ? 0 : fShortenNumber(comments)}</Typography>
             </Box>
-            <Box
+            {/* <Box
               sx={{
                 display: 'flex',
                 alignItems: 'center',
@@ -94,7 +91,7 @@ export default function ArticlePostCard({ post, onClick, onButtonClick }) {
             >
               <Iconify icon={POST_INFO[1].icon} sx={{ width: 16, height: 16, mr: 0.5 }} />
               <Typography variant="caption">{likes === 0 ? 0 : fShortenNumber(likes)}</Typography>
-            </Box>
+            </Box> */}
 
             {/* {POST_INFO.map((info, index) => (
               <Box
