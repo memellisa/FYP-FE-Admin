@@ -13,10 +13,10 @@ const CreateGroupPopup = props => {
         accept: 'image/*',
     });
 
-    const submitCreatePost = () => {
+    const submitCreateGroup = () => {
         let payloadGroup = JSON.stringify({ 'name': groupName, 'description': description, 'img': filesContent[0].content.substring(filesContent[0].content.indexOf(',')+1) })
         createGroup(payloadGroup).then(res => {
-            if (res.data === "Success") {
+            if (res.data) {
                 alert("Success creating group")
                 props.handleClose()
             }
@@ -70,7 +70,7 @@ const CreateGroupPopup = props => {
                     <FormHelperText id="my-helper-text">We'll never share your email.</FormHelperText> */}
                 </FormControl>
 
-                <Button style={styles.submitButton} disabled={groupName && fileName && description ? false : true} onClick={submitCreatePost} variant="contained" disableElevation>
+                <Button style={styles.submitButton} disabled={groupName && fileName && description ? false : true} onClick={submitCreateGroup} variant="contained" disableElevation>
                     Submit 
                 </Button>
             </div>

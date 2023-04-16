@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FormControl, Container, Button, FormLabel, MenuItem, Typography, TextField, FormHelperText } from '@mui/material';
 import { useFilePicker } from 'use-file-picker';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { createPost, getAllArticleFromDB, uploadPostImage } from "src/utils/api/article.api";
+import { createPost, getAllArticleFromDB } from "src/utils/api/article.api";
  
 const CreatePostPopup = props => {
     const [fileName, setFileName] = useState('')
@@ -27,13 +27,15 @@ const CreatePostPopup = props => {
     };
 
     const submitCreatePost = async () => {
-        let payloadPost = JSON.stringify({ 'author': author, 'content': content, "forum": groupSelection, "title": title })
-        createPost(payloadPost).then(res => {
-            let response = res.data
-            let postID = Object.entries(response)[0][0]
-            let payloadIMG = JSON.stringify({ 'img': filesContent[0].content.substring(filesContent[0].content.indexOf(',')+1), 'postID': postID })
-            uploadPostImage(payloadIMG)
-            props.handleClose()
+        let payloadPost = JSON.stringify({ 'author': author, 'content': content, 'forum': groupSelection, 'title': title, 'img': filesContent[0].content.substring(filesContent[0].content.indexOf(',')+1)})
+        createPost(groupSelection, payloadPost).then(res => {
+            if (res.data) {
+                alert("Success creating post")
+                props.handleClose()
+            }
+            else {
+                alert("Something went wrong creating post, please make sure every field is filled correctly")
+            }
         })
     }
 
@@ -45,6 +47,7 @@ const CreatePostPopup = props => {
           response.forEach((json) => {
             {Object.entries(json).map((group) => {
                 groups.push(group[0])
+                return null
             })}
           })
           setGroups(groups)

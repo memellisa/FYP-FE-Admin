@@ -1,53 +1,60 @@
 import React, { useEffect, useState } from "react";
 import { Avatar, Paper, Typography } from '@mui/material';
-import { getPostByID, getUserByUID } from "src/utils/api/article.api";
+import { getUserByUID } from "src/utils/api/article.api";
 import { fDate } from "src/utils/formatTime";
-import Comment from "./Comment";
 
-const ArticlePopup = props => {
-    const [postInfo, setPostInfo] = useState({})
+const Comment = ({comment}) => {
+    const [userInfoArray, setUserInfoArray] = useState([])
 
-    const fetchPost = async () => {
-        getPostByID(props.postID).then(res => {
-            setPostInfo(res.data)
-        })
+    const renderAllUserComment = async () => {
+        let temp = []
+        await Promise.all(comment.map(async (comm) => {
+            const result = await getUserByUID(comm.user_id);
+            if (!result.error){
+                temp.push({"avatar": result.data.info.img, "name": result.data.info.firstName + " " + result.data.info.lastName})
+            } else {
+            // Alert.alert('Something went wrong getting Activities. Please try again')
+                temp.push({"avatar": "", "name": ""})
+            }
+        }))
+        setUserInfoArray(temp)
     }
 
+
     useEffect(() => {
-        fetchPost()
-    }, []) 
+        renderAllUserComment();
+    }, [])
 
-    return (
-        <div style={styles.popupBox}>
-            <div style={styles.box}>
-                <span style={styles.closeIcon} onClick={props.handleClose}>x</span>
-                <img
-                    style={{margin: "5px auto", borderRadius: 10}}
-                    src={postInfo.img}
-                    alt={`POST IMAGE`}
-                    loading="lazy"
-                />
-                <Typography variant="h4" gutterBottom style={styles.title}>
-                    {postInfo.title}
-                </Typography>
-                <Typography gutterBottom style={styles.content}>
-                    {postInfo.content}
-                </Typography>
+    return(
+        <div>
+            {userInfoArray.map((comp, idx) => {
+                return (
+                    <div style={{marginBottom: 10}}>
+                        <div style={{display: "flex", flexDirection: "row"}}>
+                            <Avatar
+                                sx={{ width: 30, height: 30, mb: 1 }}
+                                src={comp.avatar ? comp.avatar : "https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png" }
+                                style={{display: "inline-block"}}
 
-                <Typography style={{...styles.info, paddingBottom: 15}}>
-                    Written By: {postInfo.author}
-                    <br></br>
-                    {postInfo.date}
-                </Typography>
-
-                {postInfo.comments ? <div style={styles.postedComment}>
-                    <Typography variant="h6" sx={{mb: 1}}>Comments: </Typography>
-                    {postInfo.comments ? <Comment comment={postInfo.comments}/> : ""}
-                </div> : ""}
-            </div>
+                            />
+                            <Typography style={{...styles.userName, display: "inline-block"}}>{comp.name}</Typography>
+                        </div>
+                        <div style={styles.commentContent}>
+                            <Paper variant="outlined" containerstyle={styles.commentContainer} sx={{ pl: 2 }}>
+                                {/* <Text style={styles.commentText}>{comment.content}</Text> */}
+                                <Typography style={styles.commentText}>
+                                    {comment[idx].content}
+                                </Typography>
+                            </Paper>
+                        </div>
+                        <Typography style={styles.commentLikes}>{fDate(comment[idx].date)}</Typography> 
+                    </div>)
+            })}
         </div>
     )
 }
+
+
 
 const styles = {
     popupBox: {
@@ -189,4 +196,4 @@ const styles = {
     }
 };
 
-export default ArticlePopup;
+export default Comment

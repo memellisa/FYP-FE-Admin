@@ -4,7 +4,7 @@ import Iconify from '../components/iconify';
 import { ArticlePostCard, ArticlePostsSort, ArticlePostsSearch } from '../sections/@dashboard/article';
 import { useEffect, useState } from 'react';
 import CreatePostPopup from '../components/CreatePostPopup';
-import { getAllArticleFromDB, getPostsInForums } from '../utils/api/article.api';
+import { getAllArticleFromDB } from '../utils/api/article.api';
 import ArticlePopup from 'src/components/ArticlePopup';
 import CreateGroupPopup from 'src/components/CreateGroupPopup';
 import _ from 'lodash';
@@ -106,25 +106,24 @@ export default function ArticlePage() {
             return (
               <Container disableGutters>
               {Object.entries(group).map((article) => {
-                // console.log("ARTICLE", article[1].posts)
                 return (
-                  <Container disableGutters>
-                    <Container disableGutters style={{display: 'flex', flexDirection: 'row'}}>
-                      <Typography key={article[0]} variant="h5" gutterBottom>{article[0]}</Typography>
-                      <Button sx={{borderRadius: '50%', height: 30, width: 10}}  onClick={() => {setDeleteGroupArticlePopup(article[0])}}>
-                        <Iconify icon={'eva:trash-2-outline'} sx={{ width: 16, height: 16, mr: 0.5, color: 'red' }} />
-                      </Button>
-                    </Container>
-                    {Object.keys(article[1].posts).length === 0 ? <Typography key={article[0]} variant="h9" gutterBottom>No article yet in this forum</Typography> : ''}
-                    <Grid container spacing={3} sx={{mb: 4.5}}>
-                    {Object.entries(article[1].posts).map((post) => {
-                        let postObj = {"id": post[0], "title": post[1].title, "comments": post[1].comments, "createdAt": post[1].date}
-                        // console.log("POST1", post[1])
-                        return (
-                            <ArticlePostCard key={post[0]} post={postObj} onClick={event => setOpenedArticlePopup(post[0])} onButtonClick={event => setDeleteArticlePopup(post[0])}/>
-                        )
-                      })}
-                    </Grid>
+                  <Container key={article[0]} disableGutters>
+                        <Container disableGutters style={{display: 'flex', flexDirection: 'row'}}>
+                            <Typography variant="h5" gutterBottom>{article[1].name}</Typography>
+                            <Button sx={{borderRadius: '50%', height: 30, width: 10}}  onClick={() => {setDeleteGroupArticlePopup(article[0])}}>
+                                <Iconify icon={'eva:trash-2-outline'} sx={{ width: 16, height: 16, mr: 0.5, color: 'red' }} />
+                            </Button>
+                        </Container>
+                        {Object.keys(article[1].posts).length === 0 ? <Typography key={article[0]} variant="h9" gutterBottom>No article yet in this forum</Typography> : ''}
+                        <Grid container spacing={3} sx={{mb: 4.5}}>
+                        {Object.entries(article[1].posts).map((post) => {
+                            let postObj = {"id": post[0], "title": post[1].title, "comments": post[1].comments, "createdAt": post[1].date}
+                            console.log("POST1", post[1])
+                            return (
+                                <ArticlePostCard key={post[0]} post={postObj} onClick={event => setOpenedArticlePopup(post[0])} onButtonClick={event => setDeleteArticlePopup(post[0])}/>
+                            )
+                        })}
+                        </Grid>
                   </Container>
                 )
               })}
