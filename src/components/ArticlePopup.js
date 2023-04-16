@@ -41,7 +41,10 @@ const ArticlePopup = props => {
                 </Typography>
 
                 {postInfo.comments ? <div style={styles.postedComment}>
-                    <Typography variant="h6" sx={{mb: 1}}>Comments: </Typography>
+                    <Typography variant="h6" >Comments: </Typography>
+                    <Typography style={styles.info} sx={{mb: 1}} >
+                        {postInfo.comments ? postInfo.comments.length + ' comment(s)' : 0 + ' comment(s)'} 
+                    </Typography>
                     {postInfo.comments ? <Comment comment={postInfo.comments}/> : ""}
                 </div> : ""}
             </div>

@@ -40,7 +40,7 @@ export default function ArticlePostCard({ post, onClick, onButtonClick }) {
   }
 
   const POST_INFO = [
-    { number: comments, icon: 'eva:message-circle-fill' },
+    // { number: comments, icon: 'eva:message-circle-fill' },
     // { number: likes, icon: 'eva:heart-fill' },
   ];
 
@@ -72,7 +72,7 @@ export default function ArticlePostCard({ post, onClick, onButtonClick }) {
           </StyledTitle>
 
           <StyledInfo>
-            <Box
+            {/* <Box
                 sx={{
                   display: 'flex',
                   alignItems: 'center',
@@ -81,7 +81,7 @@ export default function ArticlePostCard({ post, onClick, onButtonClick }) {
               >
                 <Iconify icon={POST_INFO[0].icon} sx={{ width: 16, height: 16, mr: 0.5 }} />
                 <Typography variant="caption">{comments === 0 ? 0 : fShortenNumber(comments)}</Typography>
-            </Box>
+            </Box> */}
             {/* <Box
               sx={{
                 display: 'flex',

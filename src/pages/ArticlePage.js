@@ -117,7 +117,7 @@ export default function ArticlePage() {
                         {Object.keys(article[1].posts).length === 0 ? <Typography key={article[0]} variant="h9" gutterBottom>No article yet in this forum</Typography> : ''}
                         <Grid container spacing={3} sx={{mb: 4.5}}>
                         {Object.entries(article[1].posts).map((post) => {
-                            let postObj = {"id": post[0], "title": post[1].title, "comments": post[1].comments, "createdAt": post[1].date}
+                            let postObj = {"id": post[0], "title": post[1].title, "createdAt": post[1].date}
                             console.log("POST1", post[1])
                             return (
                                 <ArticlePostCard key={post[0]} post={postObj} onClick={event => setOpenedArticlePopup(post[0])} onButtonClick={event => setDeleteArticlePopup(post[0])}/>
